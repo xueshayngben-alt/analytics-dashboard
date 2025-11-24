@@ -3,226 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Dashboard</title>
+    <title>Apex Automations | AI Tools for Business</title>
     <style>
+        /* --- RESET & BASE STYLES --- */
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --background-color: #f8f9fa;
-            --card-background: #ffffff;
-            --text-color: #343a40;
-            --border-radius: 8px;
-            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --primary: #0f172a; /* Deep Blue */
+            --accent: #6366f1;  /* Electric Violet */
+            --light: #f8fafc;   /* Off White */
+            --text: #334155;    /* Slate Grey */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            background-color: var(--light);
+            color: var(--text);
             line-height: 1.6;
         }
 
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        /* Desktop Layout (4 columns for metrics, 2 columns for charts) */
-        @media (min-width: 768px) {
-            .metric-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .chart-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .dashboard-container {
-                grid-template-columns: 1fr; /* Ensures main container is still 1 column */
-            }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+        .logo span { color: var(--accent); }
+
+        nav ul { display: flex; gap: 2rem; }
+        nav a:hover { color: var(--accent); }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .btn:hover { background-color: var(--accent); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 6rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: white;
         }
 
-        /* Tablet/Small Desktop Layout */
-        @media (min-width: 576px) and (max-width: 767px) {
-            .metric-grid, .chart-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
         }
         
-        .metric-grid, .chart-grid {
+        .hero p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        /* --- PROBLEM / SOLUTION --- */
+        .section { padding: 5rem 5%; }
+        
+        .grid-3 {
             display: grid;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
         .card {
-            background-color: var(--card-background);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); }
+
+        .card h3 { margin-bottom: 1rem; color: var(--primary); }
+        .icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+
+        /* --- ABOUT CHARLIE & BEN --- */
+        .about {
+            background-color: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 4rem;
         }
 
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
-
-        .card h3 {
-            margin-top: 0;
-            font-size: 1.1em;
-            color: var(--secondary-color);
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-
-        .metric-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin: 5px 0 0 0;
-        }
-
-        .metric-change {
-            font-size: 0.9em;
-            color: green;
-        }
-
-        /* Chart-specific styles (for demonstration) */
-        .chart-placeholder {
-            min-height: 250px;
-            background-color: #f1f1f1;
+        
+        .about-img {
+            background-color: #e2e8f0;
+            height: 400px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #aaa;
-            border-radius: 4px;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+
+        /* --- CTA SECTION --- */
+        .cta {
+            text-align: center;
+            background-color: var(--accent);
+            color: white;
+        }
+        .cta h2 { margin-bottom: 1rem; font-size: 2rem; }
+        .cta .btn { background-color: white; color: var(--accent); }
+        .cta .btn:hover { background-color: var(--primary); color: white; }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--primary);
+            color: #94a3b8;
+            padding: 3rem 5%;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .about { grid-template-columns: 1fr; }
+            nav { display: none; } /* Simplified for demo */
         }
     </style>
 </head>
 <body>
 
-    <header style="background-color: var(--primary-color); color: white; padding: 20px; text-align: center;">
-        <h1>📊 Interactive Analytics Dashboard</h1>
+    <header>
+        <div class="logo">Apex<span>Automations</span></div>
+        <nav>
+            <ul>
+                <li><a href="#problem">The Problem</a></li>
+                <li><a href="#process">Our Process</a></li>
+                <li><a href="#about">Charlie & Ben</a></li>
+            </ul>
+        </nav>
+        <a href="#contact" class="btn">Get Your Audit</a>
     </header>
 
-    <div class="dashboard-container">
+    <section class="hero">
+        <h1>Stop Drowning in AI Hype.<br>Start Automating.</h1>
+        <p>There are over 10,000 AI tools on the market. We find the specific ones that will save your business time, money, and headaches.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="#contact" class="btn">Find My Tools</a>
+            <a href="#process" class="btn-outline" style="border-color:white; color: white;">How It Works</a>
+        </div>
+    </section>
+
+    <section id="problem" class="section">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto;">
+            <h2>The "AI Paradox"</h2>
+            <p>You know you need Artificial Intelligence to stay competitive, but you don't have 50 hours a week to test every new chatbot, CRM wrapper, and automation agent.</p>
+        </div>
         
-        <div class="metric-grid">
-            <div class="card metric" id="card-users">
-                <h3>Total Users</h3>
-                <p class="metric-value">12,450</p>
-                <p class="metric-change" style="color: green;">+4.5% Since Last Month</p>
+        <div class="grid-3">
+            <div class="card">
+                <span class="icon">📉</span>
+                <h3>Analysis Paralysis</h3>
+                <p>Spending weeks researching tools only to find they don't integrate with your current software stack.</p>
             </div>
-            
-            <div class="card metric" id="card-sales">
-                <h3>Total Sales ($)</h3>
-                <p class="metric-value">$56,120</p>
-                <p class="metric-change" style="color: red;">-1.2% Since Last Month</p>
+            <div class="card">
+                <span class="icon">💸</span>
+                <h3>Wasted Subscription Fees</h3>
+                <p>Paying for enterprise features you don't use, or buying three tools when one could do the job.</p>
             </div>
-
-            <div class="card metric" id="card-traffic">
-                <h3>Website Traffic</h3>
-                <p class="metric-value">98,011</p>
-                <p class="metric-change" style="color: green;">+12.8% Since Last Month</p>
-            </div>
-            
-            <div class="card metric" id="card-conversion">
-                <h3>Conversion Rate</h3>
-                <p class="metric-value">3.2%</p>
-                <p class="metric-change" style="color: green;">+0.1% Since Last Month</p>
+            <div class="card">
+                <span class="icon">🧩</span>
+                <h3>Integration Nightmares</h3>
+                <p>Buying a great tool that breaks your workflow because it doesn't talk to your other systems.</p>
             </div>
         </div>
+    </section>
 
-        <div class="chart-grid">
-            <div class="card chart" id="chart-main-traffic">
-                <h3>Revenue Trend (Last 6 Months)</h3>
-                <div class="chart-placeholder">
-                    Chart Placeholder: Line Graph
-                </div>
+    <section id="about" class="section about">
+        <div class="about-img">
+            
+        </div>
+        <div class="about-text">
+            <h2>We Are The Filter.</h2>
+            <p><strong>Hi, we're Charlie and Ben.</strong></p>
+            <br>
+            <p>We aren't just software enthusiasts; we are workflow architects. We realized that for most business owners, AI isn't a magic wand—it's a confusing maze.</p>
+            <br>
+            <p>We built Apex Automations to be the bridge. We test the tools so you don't have to. We look at your unique business needs and prescribe the exact technology stack required to scale.</p>
+            <br>
+            <a href="#contact" style="color: var(--accent); font-weight: bold;">Read our manifesto &rarr;</a>
+        </div>
+    </section>
+
+    <section id="process" class="section" style="background-color: #f1f5f9;">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary);">Three Steps to Optimization</h2>
+        <div class="grid-3">
+            <div class="card">
+                <span class="icon">1️⃣</span>
+                <h3>The Workflow Audit</h3>
+                <p>We sit down with you to map out your current manual processes and identify the biggest bottlenecks.</p>
             </div>
-
-            <div class="card chart" id="chart-user-geo">
-                <h3>Users by Geography</h3>
-                <div class="chart-placeholder">
-                    Chart Placeholder: Pie/Donut Chart
-                </div>
+            <div class="card">
+                <span class="icon">2️⃣</span>
+                <h3>The Curation</h3>
+                <p>We select a custom stack of 2-3 AI tools tailored to your industry and budget.</p>
             </div>
-
-            <div class="card chart" id="chart-device">
-                <h3>Device Breakdown</h3>
-                <div class="chart-placeholder">
-                    Chart Placeholder: Bar Chart
-                </div>
-            </div>
-
-            <div class="card chart" id="chart-sessions">
-                <h3>Average Session Duration</h3>
-                <div class="chart-placeholder">
-                    Chart Placeholder: Gauge or Simple Metric
-                </div>
+            <div class="card">
+                <span class="icon">3️⃣</span>
+                <h3>The Handoff</h3>
+                <p>We don't just send a list. We help you set them up and provide a playbook on how to use them.</p>
             </div>
         </div>
+    </section>
 
-    </div>
+    <section id="contact" class="section cta">
+        <h2>Ready to reclaim your time?</h2>
+        <p style="margin-bottom: 2rem; opacity: 0.9;">Book a free 15-minute discovery call with Charlie or Ben.</p>
+        <a href="#" class="btn">Schedule Discovery Call</a>
+    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Dashboard is loaded and ready.');
-
-            // --- 1. FUNCTION TO UPDATE METRICS ---
-            const updateMetric = (id, newValue, newChange, isPositive) => {
-                const card = document.getElementById(id);
-                if (card) {
-                    card.querySelector('.metric-value').textContent = newValue;
-                    const changeElement = card.querySelector('.metric-change');
-                    changeElement.textContent = newChange + ' Since Last Month';
-                    changeElement.style.color = isPositive ? 'green' : 'red';
-                }
-            };
-
-            // --- 2. SIMULATE ASYNC DATA FETCH ---
-            const fetchData = () => {
-                console.log('Fetching new data...');
-                
-                // Simulate receiving new data from an API
-                const newData = {
-                    users: { value: '13,050', change: '+5.5%', positive: true },
-                    sales: { value: '$60,500', change: '+7.8%', positive: true },
-                    traffic: { value: '105,200', change: '+7.3%', positive: true },
-                    conversion: { value: '3.5%', change: '+0.3%', positive: true }
-                };
-
-                // Update the dashboard metrics
-                updateMetric('card-users', newData.users.value, newData.users.change, newData.users.positive);
-                updateMetric('card-sales', newData.sales.value, newData.sales.change, newData.sales.positive);
-                updateMetric('card-traffic', newData.traffic.value, newData.traffic.change, newData.traffic.positive);
-                updateMetric('card-conversion', newData.conversion.value, newData.conversion.change, newData.conversion.positive);
-
-                // In a real application, you would initialize or update your charting library (e.g., Chart.js) here
-                console.log('Charts would be rendered/updated here.');
-            };
-
-            // --- 3. RUN INITIAL DATA LOAD & SETUP REFRESH INTERVAL ---
-            fetchData(); // Load data immediately on page load
-
-            // Set up a 60-second automatic refresh (for a live dashboard feel)
-            // setInterval(fetchData, 60000); 
-
-            // --- 4. EXAMPLE INTERACTION: Card click opens a detail view ---
-            document.querySelectorAll('.metric').forEach(card => {
-                card.style.cursor = 'pointer';
-                card.addEventListener('click', () => {
-                    alert(`Clicked on ${card.querySelector('h3').textContent}. \nIn a real app, this would navigate to a detail page.`);
-                });
-            });
-
-        });
-    </script>
+    <footer>
+        <p>&copy; 2025 Apex Automations by Charlie & Ben. All rights reserved.</p>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; opacity: 0.7;">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Email Us</a>
+        </div>
+    </footer>
 
 </body>
 </html>
